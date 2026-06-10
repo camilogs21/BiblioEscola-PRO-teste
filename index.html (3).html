@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BiblioEscola PRO — Testes das Aulas</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{--vd:#14532d;--vm:#166534;--vc:#22c55e;--vbg:#f0fdf4;--vb:#bbf7d0;--cd:#1e293b;--cg:#64748b;--r:12px;--sh:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.05)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--vbg);color:var(--cd);min-height:100vh;padding-bottom:60px}
+/* HEADER */
+.hdr{background:var(--vd);color:white;padding:22px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.hdr-ic{width:44px;height:44px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,.6);letter-spacing:.5px;text-transform:uppercase}
+.hdr-ttl{font-size:19px;font-weight:700}
+.hdr-bdg{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 14px;font-size:13px;color:rgba(255,255,255,.85)}
+/* SCREENS */
+#sh{display:block}#sq{display:none}
+/* HOME */
+.home-hero{max-width:680px;margin:0 auto;padding:34px 20px 0;text-align:center}
+.home-hero h2{font-size:24px;font-weight:800;color:var(--vd);margin-bottom:8px}
+.home-hero p{color:var(--cg);font-size:15px}
+.home-bdg{display:inline-block;background:white;border:2px solid var(--vb);border-radius:20px;padding:7px 18px;font-size:13px;color:var(--vm);font-weight:600;margin-top:14px}
+.grid{max-width:900px;margin:26px auto 0;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:12px}
+.mlbl{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--cg);margin:20px 0 4px;grid-column:1/-1}
+.card{background:white;border-radius:var(--r);padding:18px;color:inherit;box-shadow:var(--sh);border:2px solid transparent;transition:all .15s;display:flex;align-items:flex-start;gap:12px;cursor:pointer;width:100%;text-align:left}
+.card:hover{border-color:var(--vc);transform:translateY(-2px);box-shadow:0 4px 18px rgba(22,101,52,.14)}
+.ci{font-size:24px;min-width:32px;text-align:center;margin-top:2px}
+.cn{font-size:11px;font-weight:700;color:var(--vm);letter-spacing:.5px;margin-bottom:3px}
+.ct{font-size:14px;font-weight:600;line-height:1.3}
+.cq{font-size:12px;color:var(--cg);margin-top:5px}
+/* QUIZ */
+.qw{max-width:780px;margin:0 auto;padding:26px 20px 0}
+.bbk{display:flex;align-items:center;gap:8px;background:none;border:none;color:var(--vm);font-size:14px;font-weight:600;cursor:pointer;margin-bottom:20px;padding:0}
+.bbk:hover{color:var(--vd)}
+.ic{background:white;border-radius:var(--r);padding:22px 26px;border-left:5px solid var(--vm);box-shadow:var(--sh);margin-bottom:16px}
+.ic h2{font-size:17px;color:var(--vd);margin-bottom:5px}
+.ic p{color:var(--cg);font-size:14px;line-height:1.6}
+/* NOME */
+.nome-wrap{background:white;border-radius:var(--r);padding:16px 22px;box-shadow:var(--sh);margin-bottom:22px;display:flex;align-items:center;gap:14px;border:2px solid var(--vb)}
+.nome-wrap label{font-size:14px;font-weight:600;color:var(--vd);white-space:nowrap}
+.nome-input{flex:1;border:2px solid #e2e8f0;border-radius:8px;padding:10px 14px;font-size:15px;font-family:inherit;outline:none;transition:border-color .15s}
+.nome-input:focus{border-color:var(--vm)}
+/* PROGRESS */
+.pw{margin-bottom:22px}
+.pl{display:flex;justify-content:space-between;font-size:13px;color:var(--cg);margin-bottom:7px}
+.pb{height:6px;background:var(--vb);border-radius:99px;overflow:hidden}
+.pf{height:100%;background:var(--vc);border-radius:99px;transition:width .4s ease;width:0%}
+/* QUESTIONS */
+.qc{background:white;border-radius:var(--r);padding:22px 24px;box-shadow:var(--sh);margin-bottom:14px;border:2px solid transparent;transition:border-color .2s}
+.qc.correct{border-color:var(--vc)}.qc.wrong{border-color:#dc2626}
+.qn{font-size:11px;font-weight:600;color:var(--vm);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.qt{font-size:16px;font-weight:500;line-height:1.5;margin-bottom:15px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;align-items:flex-start;gap:11px;padding:12px 15px;border:2px solid #e2e8f0;border-radius:10px;cursor:pointer;transition:all .15s;font-size:15px;line-height:1.4;background:white;text-align:left;width:100%}
+.opt:hover:not(.dis){border-color:var(--vm);background:var(--vbg)}
+.opt.sel{border-color:var(--vm);background:var(--vbg)}
+.opt.ok{border-color:var(--vc);background:#f0fdf4}
+.opt.nope{border-color:#dc2626;background:#fef2f2}
+.opt.dis{cursor:default}
+.ol{min-width:25px;height:25px;border-radius:50%;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--cg);transition:all .15s;flex-shrink:0;margin-top:1px}
+.opt.sel .ol{background:var(--vm);color:white}
+.opt.ok .ol{background:var(--vc);color:white}
+.opt.nope .ol{background:#dc2626;color:white}
+.fb{margin-top:12px;padding:11px 15px;border-radius:8px;font-size:14px;display:none;line-height:1.5}
+.fb.show{display:block}.fb.ok{background:#dcfce7;color:#166534}.fb.nope{background:#fef2f2;color:#dc2626}
+/* SUBMIT */
+.sw{text-align:center;margin-top:8px}
+.bsb{padding:14px 48px;background:var(--vd);color:white;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(22,101,52,.3);transition:all .15s}
+.bsb:hover{background:var(--vm);transform:translateY(-1px)}.bsb:disabled{opacity:.45;cursor:default;transform:none}
+/* RESULT */
+.rc{background:white;border-radius:var(--r);padding:34px 30px;box-shadow:var(--sh);text-align:center;display:none;margin-top:10px}
+.rc.show{display:block}
+.re{font-size:52px;margin-bottom:13px}.rs{font-size:42px;font-weight:800;color:var(--vd)}.rp{font-size:16px;color:var(--cg);margin-top:4px}
+.rb{margin:18px auto;max-width:320px}.rm{font-size:15px;color:var(--cd);line-height:1.6;margin-top:13px}
+.rbs{margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.brt{padding:12px 28px;background:var(--vm);color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
+.brt:hover{background:var(--vd)}
+.bh{padding:12px 28px;background:white;color:var(--vm);border:2px solid var(--vb);border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
+.bh:hover{border-color:var(--vc);background:var(--vbg)}
+.bpr{padding:12px 28px;background:#1e293b;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
+.bpr:hover{background:#0f172a}
+.footer{text-align:center;margin-top:44px;font-size:12px;color:var(--cg);padding:0 20px}
+@media(max-width:600px){.grid{padding:0 12px}.qw{padding:16px 12px 0}.qc{padding:18px 16px}.nome-wrap{flex-direction:column;align-items:flex-start}}
+
+/* ===== IMPRESSÃO ===== */
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  body,html{background:white!important;margin:0;padding:0}
+  #sh,#sq{display:none!important}
+  #pa{display:block!important}
+  .pa-hdr{padding-bottom:12px;border-bottom:3px solid #14532d;margin-bottom:20px}
+  .pa-escola{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.8px}
+  .pa-titulo{font-size:22px;font-weight:800;color:#14532d;margin:4px 0 2px}
+  .pa-meta{font-size:12px;color:#64748b}
+  .pa-aluno{margin-top:10px;padding-top:10px;border-top:1px dashed #cbd5e1;font-size:14px;color:#1e293b}
+  .pa-aluno strong{color:#14532d}
+  .pa-nota{display:inline-block;margin-top:8px;background:#f0fdf4;border:2px solid #bbf7d0;border-radius:8px;padding:6px 18px;font-size:16px;font-weight:800;color:#14532d}
+  .pa-q{margin-bottom:18px;page-break-inside:avoid}
+  .pa-qn{font-size:10px;font-weight:700;color:#15803d;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
+  .pa-qt{font-size:13px;font-weight:600;color:#1e293b;line-height:1.5;margin-bottom:8px}
+  .pa-opt{display:flex;align-items:flex-start;gap:9px;padding:6px 11px;border-radius:6px;margin-bottom:5px;font-size:12px;line-height:1.4;border:1.5px solid #e2e8f0}
+  .pa-opt.ok{background:#dcfce7!important;border-color:#22c55e!important}
+  .pa-opt.nope{background:#fef2f2!important;border-color:#dc2626!important}
+  .pa-lt{width:20px;height:20px;border-radius:50%;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px}
+  .pa-opt.ok .pa-lt{background:#22c55e!important;color:white!important}
+  .pa-opt.nope .pa-lt{background:#dc2626!important;color:white!important}
+  hr.pa-hr{border:none;border-top:1px dashed #e2e8f0;margin:14px 0}
+}
+</style>
+</head>
+<body>
+
+<!-- ÁREA DE IMPRESSÃO (oculta na tela, visível só ao imprimir) -->
+<div id="pa" style="display:none;padding:28px 32px;max-width:720px;margin:0 auto;font-family:'Inter',sans-serif"></div>
+
+<!-- HOME -->
+<div id="sh">
+  <div class="hdr">
+    <div class="hdr-l"><div class="hdr-ic">📚</div><div><div class="hdr-sub">BiblioEscola PRO · Turma 202 · 2026</div><div class="hdr-ttl">Testes das Aulas</div></div></div>
+    <div class="hdr-bdg">16 aulas · 80 questões</div>
+  </div>
+  <div class="home-hero">
+    <h2>Escolha uma aula para testar</h2>
+    <p>Clique em qualquer aula para abrir o teste. Sem cadastro — funciona direto no navegador.</p>
+    <div class="home-bdg">5 questões por aula · Correção automática · Impressão</div>
+  </div>
+  <div class="grid">
+    <div class="mlbl">Módulo 1 · Fundamentos Web</div>
+    <button class="card" onclick="openAula(1)"><div class="ci">💻</div><div><div class="cn">AULA 1</div><div class="ct">O que é Programação?</div><div class="cq">5 questões</div></div></button>
+    <button class="card" onclick="openAula(2)"><div class="ci">🏷️</div><div><div class="cn">AULA 2</div><div class="ct">HTML: Estrutura e Tags</div><div class="cq">5 questões</div></div></button>
+    <button class="card" onclick="openAula(3)"><div class="ci">🎨</div><div><div class="cn">AULA 3</div><div class="ct">CSS: Dando Estilo à Página</div><div class="cq">5 questões</div></div></button>
+    <div class="mlbl">Módulo 2 · JavaScript</div>
+    <button class="card" onclick="openAula(4)"><div class="ci">📦</div><div><div class="cn">AULA 4</div><div class="ct">JavaScript: Variáveis e Tipos</div><div class="cq">5 questões</div></div></button>
+    <button class="card" onclick="openAula(5)"><div class="ci">🔀</div><div><div class="cn">AULA 5</div><div class="ct">JavaScript: Funções e Condições</div><div class="cq">5 questões</div></div></button>
+    <button class="card" onclick="openAula(6)"><div class="ci">🗃️</div><div><div class="cn">AULA 6</div><div class="ct">Arrays e Objetos: Guardando Dados</div><div class="cq">5 questões</div></div></button>
+    <div class="mlbl">Módulo 3 · Interface</div>
+    <button class="card" onclick="openAula(7)"><div class="ci">🖥️</div><div><div class="cn">AULA 7</div><div class="ct">Criando o Layout do Sistema</div><div class="cq">5 questões</div></div></button>
+    <button class="card" onclick="openAula(8)"><div class="ci">🪟</div><div><div class="cn">AULA 8</div><div class="ct">Botões, Modais e Formulários</div><div class="cq">5 questões</div></div></button>
+    <button class="card" onclick="openAula(9)"><div class="ci">✨</div><div><div class="cn">AULA 9</div><div class="ct">CSS Avançado: Cards e Tabelas</div><div class="cq">5 questões</div></div></button>
+    <div class="mlbl">Módulo 4 · Dados</div>
+    <button class="card" onclick="openAula(10)"><div class="ci">💾</div><div><div class="cn">AULA 10</div><div class="ct">LocalStorage: Salvando Dados</div><div class="cq">5 questões</div></div></button>
+    <button class="card" onclick="openAula(11)"><div class="ci">☁️</div><div><div class="cn">AULA 11</div><div class="ct">Supabase: Banco de Dados na Nuvem</div><div class="cq">5 questões</div></div></button>
+    <button class="card" onclick="openAula(12)"><div class="ci">⏳</div><div><div class="cn">AULA 12</div><div class="ct">Async/Await: Código Assíncrono</div><div class="cq">5 questões</div></div></button>
+    <div class="mlbl">Módulo 5 · Funcionalidades</div>
+    <button class="card" onclick="openAula(13)"><div class="ci">📝</div><div><div class="cn">AULA 13</div><div class="ct">CRUD de Livros e Alunos</div><div class="cq">5 questões</div></div></button>
+    <button class="card" onclick="openAula(14)"><div class="ci">📖</div><div><div class="cn">AULA 14</div><div class="ct">Sistema de Empréstimos</div><div class="cq">5 questões</div></div></button>
+    <button class="card" onclick="openAula(15)"><div class="ci">📊</div><div><div class="cn">AULA 15</div><div class="ct">Dashboard e Relatórios</div><div class="cq">5 questões</div></div></button>
+    <div class="mlbl">Módulo 6 · Deploy</div>
+    <button class="card" onclick="openAula(16)"><div class="ci">🚀</div><div><div class="cn">AULA 16</div><div class="ct">Deploy: Publicando na Internet</div><div class="cq">5 questões</div></div></button>
+  </div>
+  <div class="footer">Prof. Camilo Silva · C.E. Francisco Antônio Vieira Caldas Júnior · 2026</div>
+</div>
+
+<!-- QUIZ -->
+<div id="sq">
+  <div class="hdr">
+    <div class="hdr-l"><div class="hdr-ic" id="qic"></div><div><div class="hdr-sub">BiblioEscola PRO · Turma 202</div><div class="hdr-ttl" id="qttl"></div></div></div>
+    <div class="hdr-bdg">📋 5 questões</div>
+  </div>
+  <div class="qw">
+    <button class="bbk" onclick="goHome()">← Voltar às aulas</button>
+    <div class="ic"><h2 id="qsub"></h2><p>Preencha seu nome, responda todas as questões e clique em <strong>Verificar Respostas</strong>.</p></div>
+    <div class="nome-wrap">
+      <label for="nome">✏️ Seu nome:</label>
+      <input type="text" id="nome" class="nome-input" placeholder="Digite seu nome completo aqui...">
+    </div>
+    <div class="pw"><div class="pl"><span>Progresso</span><span id="pc">0/5 respondidas</span></div><div class="pb"><div class="pf" id="pf"></div></div></div>
+    <div id="qcon"></div>
+    <div class="sw"><button class="bsb" id="bsb" onclick="submitQuiz()" disabled>Verificar Respostas</button></div>
+    <div class="rc" id="rcard">
+      <div class="re" id="re"></div>
+      <div class="rs" id="rs"></div>
+      <div class="rp" id="rp"></div>
+      <div class="rb"><div class="pb"><div class="pf" id="rf" style="transition:width .8s ease"></div></div></div>
+      <div class="rm" id="rm"></div>
+      <div class="rbs">
+        <button class="brt" onclick="retryQuiz()">🔄 Tentar Novamente</button>
+        <button class="bpr" onclick="imprimirResultado()">🖨️ Imprimir Resultado</button>
+        <button class="bh" onclick="goHome()">← Outras Aulas</button>
+      </div>
+    </div>
+    <div class="footer">Prof. Camilo Silva · C.E. Francisco Antônio Vieira Caldas Júnior · 2026</div>
+  </div>
+</div>
+
+<script>
+const AULAS=[null,
+{num:1,title:"O que é Programação?",emoji:"💻",qs:[
+{t:"O que é um programa de computador?",o:["Um arquivo de música armazenado no HD","Um conjunto de instruções que o computador segue para realizar uma tarefa","Um tipo de vírus digital","Um componente físico da máquina"],a:1,e:"Um programa é um conjunto de instruções que o computador executa uma por vez para realizar uma tarefa."},
+{t:"Qual linguagem define a ESTRUTURA de uma página web?",o:["CSS","JavaScript","Python","HTML"],a:3,e:"HTML (HyperText Markup Language) define a estrutura — é o esqueleto do site."},
+{t:"O CSS é responsável por:",o:["Fazer botões funcionarem","Armazenar dados no banco","Definir o visual da página (cores, tamanhos, fontes)","Comunicar com o servidor"],a:2,e:"CSS define o VISUAL da página — é a roupa do site."},
+{t:"JavaScript é descrito na aula como o cérebro do site porque:",o:["Define a estrutura das tags","Gerencia o banco de dados","Faz o site funcionar: botões que reagem e dados que salvam","Controla as cores e fontes"],a:2,e:"JavaScript torna o site interativo — botões que reagem, dados que salvam, etc."},
+{t:"Qual era a meta prática da Aula 1?",o:["Publicar um site no Vercel","Criar um banco de dados no Supabase","Abrir o primeiro arquivo HTML no Chromebook e ver o resultado","Instalar o Node.js"],a:2,e:"A meta da Aula 1 era criar e abrir o primeiro arquivo HTML no Chromebook."}
+]},
+{num:2,title:"HTML: Estrutura e Tags",emoji:"🏷️",qs:[
+{t:"Qual tag cria o título principal de uma página (o maior)?",o:["&lt;title&gt;","&lt;p&gt;","&lt;h1&gt;","&lt;header&gt;"],a:2,e:"A tag h1 é o título de maior hierarquia; vai de h1 (maior) a h6 (menor)."},
+{t:"A tag &lt;p&gt; serve para:",o:["Criar um link","Inserir uma imagem","Agrupar elementos","Criar um parágrafo de texto"],a:3,e:"A tag p representa um parágrafo de texto na página."},
+{t:"Qual tag representa um container genérico para agrupar elementos?",o:["&lt;section&gt;","&lt;div&gt;","&lt;span&gt;","&lt;group&gt;"],a:1,e:"div é o container genérico usado para agrupar outros elementos HTML."},
+{t:"A tag &lt;input&gt; é considerada self-closing. O que isso significa?",o:["Ela fecha o formulário automaticamente","Não precisa de tag de fechamento separada","Ela só funciona dentro de &lt;form&gt;","Ela apaga o conteúdo ao ser clicada"],a:1,e:"Tags self-closing como input não precisam de tag de fechamento separada."},
+{t:"Qual tag cria um link para outra página ou seção?",o:["&lt;link&gt;","&lt;button&gt;","&lt;a&gt;","&lt;nav&gt;"],a:2,e:"A tag a (âncora) cria links para outras páginas ou seções."}
+]},
+{num:3,title:"CSS: Dando Estilo à Página",emoji:"🎨",qs:[
+{t:"Onde o CSS é inserido dentro do HTML na forma ensinada na aula?",o:["Dentro da tag body","Dentro da tag &lt;style&gt; no &lt;head&gt;","Em um arquivo separado obrigatoriamente","Dentro de cada tag como atributo class"],a:1,e:"Na aula, o CSS é colocado dentro da tag style no head do documento."},
+{t:"Qual propriedade CSS arredonda os cantos de um elemento?",o:["border-style","box-shadow","border-radius","corner-round"],a:2,e:"border-radius arredonda os cantos de um elemento."},
+{t:"A propriedade CSS padding controla:",o:["A cor do texto","O espaço externo entre elementos","O espaço interno entre o conteúdo e a borda do elemento","A largura da borda"],a:2,e:"padding é o espaço INTERNO entre o conteúdo e a borda. margin é o espaço externo."},
+{t:"Para criar um layout flexível e alinhar elementos em linha, usa-se:",o:["display: block","display: flex","display: table","display: inline"],a:1,e:"display: flex ativa o Flexbox, que permite alinhar elementos com facilidade."},
+{t:"No código da aula, qual cor hex é usada para o botão verde principal?",o:["#14532d","#22c55e","#166534","#f0fdf4"],a:2,e:"#166534 é o verde escuro usado para o botão .botao na aula."}
+]},
+{num:4,title:"JavaScript: Variáveis e Tipos",emoji:"📦",qs:[
+{t:"Qual palavra-chave é usada na aula para declarar variáveis?",o:["var","const","let","define"],a:2,e:"Na aula, usa-se let para declarar variáveis."},
+{t:"Qual é o tipo de dado de: let ativo = true;",o:["String","Number","Boolean","Object"],a:2,e:"true e false são valores do tipo Boolean (verdadeiro/falso)."},
+{t:"Como se acessa o título do objeto: let livro = { titulo: 'Dom Casmurro' };",o:["livro[titulo]","livro->titulo","livro.titulo","livro('titulo')"],a:2,e:"Para acessar propriedades de um objeto usa-se a notação de ponto: livro.titulo"},
+{t:"O tipo Array representa:",o:["Um número decimal","Uma lista de valores","Um valor verdadeiro ou falso","Um texto entre aspas"],a:1,e:"Array é uma lista ordenada de valores, como ['a','b','c']."},
+{t:"O tipo Object é descrito na aula como:",o:["Um texto longo","Uma função especial","Um número muito grande","Um conjunto de pares chave: valor"],a:3,e:"Object é um conjunto de propriedades no formato { chave: valor }."}
+]},
+{num:5,title:"JavaScript: Funções e Condições",emoji:"🔀",qs:[
+{t:"O que faz a estrutura if / else?",o:["Repete um bloco de código várias vezes","Declara uma variável","Executa código SE uma condição for verdadeira, SENÃO executa outro bloco","Importa uma biblioteca"],a:2,e:"if/else executa um bloco SE a condição for verdadeira, e outro bloco (else) caso contrário."},
+{t:"Qual é a função de return dentro de uma função?",o:["Reinicia o programa","Devolve um resultado para quem chamou a função","Cria um novo objeto","Para a execução do navegador"],a:1,e:"return devolve um valor da função para quem a chamou."},
+{t:"verificarLivro recebe um livro com disponivel: false. O que ela retorna?",o:["'Livro disponível para empréstimo!'","true","undefined","'Livro já emprestado.'"],a:3,e:"Como disponivel é false, o bloco else é executado e retorna 'Livro já emprestado.'"},
+{t:"O método forEach é usado para:",o:["Verificar se dois arrays são iguais","Encontrar um item específico","Executar uma função para cada item de uma lista","Ordenar uma lista"],a:2,e:"forEach executa uma função para cada item de um array."},
+{t:"Uma function serve para:",o:["Criar uma tabela HTML","Conectar ao banco de dados","Agrupar instruções em um bloco nomeado e reutilizável","Definir estilos CSS"],a:2,e:"function agrupa instruções em um bloco que pode ser chamado várias vezes."}
+]},
+{num:6,title:"Arrays e Objetos: Guardando Dados",emoji:"🗃️",qs:[
+{t:"Como se adiciona um item ao final de um array?",o:[".add(item)",".push(item)",".append(item)",".insert(item)"],a:1,e:".push(item) adiciona um item ao final do array."},
+{t:"O método .filter(fn) retorna:",o:["O primeiro item que passa no teste","O índice do item encontrado","Um novo array com os itens que passam no teste","O número total de itens"],a:2,e:".filter() retorna um NOVO array contendo apenas os itens que passam na função de teste."},
+{t:"Para encontrar UM único item no array, usa-se:",o:[".filter(fn)",".map(fn)",".find(fn)",".forEach(fn)"],a:2,e:".find() retorna o primeiro item que satisfaz a condição — apenas um."},
+{t:"Como se obtém o número total de livros no array?",o:["livros.count","livros.total","livros.size","livros.length"],a:3,e:".length retorna o número de itens de um array."},
+{t:"O método .map(fn) serve para:",o:["Filtrar itens inválidos","Transformar cada item da lista em um novo valor","Contar quantos itens existem","Remover itens duplicados"],a:1,e:".map() cria um novo array transformando cada item com a função passada."}
+]},
+{num:7,title:"Criando o Layout do Sistema",emoji:"🖥️",qs:[
+{t:"Qual é a função da Sidebar no sistema BiblioEscola?",o:["Exibir relatórios em gráficos","Mostrar notificações do sistema","Ser o menu lateral fixo de navegação","Controlar a autenticação do usuário"],a:2,e:"A Sidebar (#sidebar no CSS) é o menu lateral fixo de navegação."},
+{t:"Qual seletor CSS identifica a área principal de conteúdo?",o:["#sidebar","#topbar","#page-content","#main-area"],a:2,e:"#page-content identifica a área de conteúdo principal do sistema."},
+{t:"Os stat cards no Dashboard exibem:",o:["Formulários de cadastro","Gráficos de pizza","Números resumo (Livros, Alunos, Empréstimos, Atrasos)","A lista de usuários logados"],a:2,e:"Os stat cards mostram números resumo da biblioteca: livros, alunos, empréstimos e atrasos."},
+{t:"No layout da aula, a Topbar é identificada no CSS por:",o:["#navbar","#menu-top","#topbar","#header-bar"],a:2,e:"A barra superior é identificada por #topbar no CSS."},
+{t:"O layout principal usa qual estrutura para posicionar Sidebar + Conteúdo lado a lado?",o:["display: table","float: left","display: flex","position: absolute"],a:2,e:"Flexbox (display: flex) é usado para posicionar o menu lateral e o conteúdo lado a lado."}
+]},
+{num:8,title:"Botões, Modais e Formulários",emoji:"🪟",qs:[
+{t:"O que é um Modal na aula?",o:["Um tipo de banco de dados","Uma janela que abre sobre a página","Um arquivo CSS externo","Um componente do Supabase"],a:1,e:"Modal é uma janela que aparece sobre a página, usada para formulários de cadastro."},
+{t:"O método document.getElementById(id) serve para:",o:["Criar um novo elemento HTML","Deletar um elemento da página","Acessar um elemento HTML existente pelo seu atributo id","Verificar se o elemento está visível"],a:2,e:"getElementById() localiza e retorna um elemento do DOM pelo seu id."},
+{t:"Como se abre um modal com classe CSS open no código da aula?",o:["element.style.display = 'block'","element.classList.add('open')","element.open = true","modal.show()"],a:1,e:"classList.add('open') adiciona a classe open ao elemento, que o torna visível."},
+{t:"Por que se usa event.preventDefault() em formulários?",o:["Para limpar os campos do formulário","Para validar os dados antes de enviar","Para evitar que a página recarregue ao submeter o formulário","Para fechar o modal automaticamente"],a:2,e:"preventDefault() impede o comportamento padrão do formulário, que é recarregar a página."},
+{t:"Como se lê o valor digitado em um campo com id livro-titulo?",o:["document.getElementById('livro-titulo').text","document.getElementById('livro-titulo').value","document.querySelector('livro-titulo').content","document.getInput('livro-titulo')"],a:1,e:".value é a propriedade que retorna o texto digitado em um campo input."}
+]},
+{num:9,title:"CSS Avançado: Cards e Tabelas",emoji:"✨",qs:[
+{t:"O que são variáveis CSS (Custom Properties)?",o:["Classes reutilizáveis definidas com ponto","Valores nomeados com -- que podem ser reutilizados em todo o CSS","Funções JavaScript chamadas dentro do CSS","Importações de bibliotecas externas"],a:1,e:"Variáveis CSS são declaradas com -- no :root e reutilizadas com var(--nome)."},
+{t:"No código da aula, qual variável CSS armazena o verde principal?",o:["--verde-bg","--cor-primaria","--verde","--borda"],a:2,e:"--verde: #166534 é a variável que armazena o verde principal do sistema."},
+{t:"A propriedade align-items: center no Flexbox centraliza os itens:",o:["Horizontalmente","Verticalmente no eixo cruzado","Define o espaço entre os itens","Quebra os itens em múltiplas linhas"],a:1,e:"align-items: center centraliza os itens no eixo perpendicular ao fluxo principal."},
+{t:"A propriedade transition CSS serve para:",o:["Criar animações de entrada de página","Aplicar animações suaves quando propriedades mudam","Definir quantos itens aparecem por linha","Controlar a ordem de empilhamento"],a:1,e:"transition cria animações suaves quando uma propriedade CSS muda de valor."},
+{t:"No .stat-card da aula, qual é o valor de border-radius?",o:["8px","16px","12px","0px"],a:2,e:"O .stat-card usa border-radius: 12px conforme o código da aula."}
+]},
+{num:10,title:"LocalStorage: Salvando Dados",emoji:"💾",qs:[
+{t:"O que é o localStorage?",o:["Um banco de dados PostgreSQL","Um arquivo JSON no servidor","Um espaço de armazenamento do próprio navegador","Um serviço pago da Vercel"],a:2,e:"localStorage é um espaço de armazenamento local do navegador, sem necessidade de servidor."},
+{t:"Por que se usa JSON.stringify() ao salvar no localStorage?",o:["Para criptografar os dados","Porque o localStorage só armazena texto (strings)","Para comprimir os dados","Para enviar os dados para o Supabase"],a:1,e:"localStorage só aceita texto. JSON.stringify() converte objetos/arrays em texto JSON."},
+{t:"Como se carrega o array de livros do localStorage?",o:["localStorage.load('livros')","JSON.parse(localStorage.getItem('livros')) || []","localStorage.read('livros')","fetch(localStorage.get('livros'))"],a:1,e:"getItem() lê o texto salvo e JSON.parse() o converte de volta para objeto/array."},
+{t:"Qual é a limitação de armazenamento do localStorage por domínio?",o:["100MB","1GB","~5MB","Ilimitado"],a:2,e:"O localStorage é limitado a aproximadamente 5MB por domínio."},
+{t:"Qual a diferença entre localStorage e sessionStorage?",o:["localStorage é mais rápido","sessionStorage some quando a aba é fechada; localStorage persiste","localStorage requer autenticação","sessionStorage suporta mais dados"],a:1,e:"sessionStorage perde os dados ao fechar a aba; localStorage persiste mesmo fechando o navegador."}
+]},
+{num:11,title:"Supabase: Banco de Dados na Nuvem",emoji:"☁️",qs:[
+{t:"O Supabase oferece qual tipo de banco de dados?",o:["MongoDB (NoSQL)","Firebase Realtime Database","PostgreSQL (SQL relacional)","SQLite local"],a:2,e:"O Supabase usa PostgreSQL, um banco de dados relacional gratuito na nuvem."},
+{t:"Como o sistema BiblioEscola se comunica com o Supabase?",o:["Via SSH","Via API REST com fetch()","Via WebSocket exclusivamente","Via biblioteca Node.js instalada"],a:1,e:"A comunicação é feita via API REST usando o método fetch() do JavaScript."},
+{t:"O que é a apikey do Supabase?",o:["O nome do projeto no GitHub","A senha do banco de dados","A chave de acesso que autoriza as requisições ao banco","O endereço IP do servidor"],a:2,e:"A apikey é a chave de autenticação incluída nos headers de cada requisição ao Supabase."},
+{t:"CRUD significa:",o:["Code, Run, Update, Deploy","Create, Read, Update, Delete","Connect, Request, Upload, Download","Compile, Run, Upload, Debug"],a:1,e:"CRUD = Create (inserir), Read (ler), Update (atualizar), Delete (deletar)."},
+{t:"No endpoint REST do Supabase, ?select=* significa:",o:["Selecionar apenas a primeira linha","Selecionar todas as colunas de todos os registros","Filtrar registros por data","Contar o total de registros"],a:1,e:"?select=* instrui o Supabase a retornar todas as colunas de todos os registros."}
+]},
+{num:12,title:"Async/Await: Código Assíncrono",emoji:"⏳",qs:[
+{t:"Por que JavaScript é considerado assíncrono?",o:["Porque é mais lento que outras linguagens","Porque pode iniciar operações sem travar a execução do restante do código","Porque usa múltiplos processadores","Porque só funciona online"],a:1,e:"JavaScript é assíncrono: pode disparar operações (como fetch) e continuar executando sem esperar."},
+{t:"O que é uma Promise em JavaScript?",o:["Uma função que nunca falha","Uma promessa de que um valor estará disponível no futuro","Um tipo especial de array","Um evento do navegador"],a:1,e:"Promise representa um valor que ainda não está disponível, mas estará no futuro."},
+{t:"A palavra-chave await só pode ser usada dentro de:",o:["Um bloco if","Uma função declarada com async","Um loop for","Uma tag script"],a:1,e:"await só funciona dentro de funções marcadas como async."},
+{t:"O bloco try/catch é usado para:",o:["Testar a velocidade do código","Capturar e tratar erros que podem ocorrer (como falha de rede)","Criar variáveis temporárias","Verificar o tipo de uma variável"],a:1,e:"try/catch captura erros em tempo de execução — essencial ao lidar com requisições de rede."},
+{t:"O que faz: if (!resp.ok) throw new Error('Erro!')?",o:["Ignora respostas com erro","Lança um erro se a resposta HTTP indicar falha","Redireciona para outra página","Salva o erro no localStorage"],a:1,e:"!resp.ok verifica se a resposta HTTP foi bem-sucedida; se não foi, lança um erro para o catch."}
+]},
+{num:13,title:"CRUD de Livros e Alunos",emoji:"📝",qs:[
+{t:"Qual método HTTP é usado para CRIAR um novo registro no Supabase?",o:["GET","DELETE","PATCH","POST"],a:3,e:"POST é o método HTTP usado para criar (INSERT) novos registros."},
+{t:"Qual método HTTP é usado para LER dados no Supabase?",o:["POST","PUT","GET","DELETE"],a:2,e:"GET é o método HTTP para ler (SELECT) dados."},
+{t:"Qual método HTTP é usado para ATUALIZAR um registro existente?",o:["POST","PATCH","DELETE","GET"],a:1,e:"PATCH é o método HTTP para atualizações parciais (UPDATE) de registros."},
+{t:"Após deletar do banco, o que o código faz com o array local?",o:["Recarrega a página inteira","Chama a função carregarLivros() do Supabase","Filtra o array removendo o item pelo id e chama renderLivros()","Limpa o localStorage"],a:2,e:"Após o DELETE no banco, usa .filter() para remover do array local e chama renderLivros() para atualizar a tabela."},
+{t:"O ID único de cada registro é importante porque:",o:["Deixa o código mais rápido","Identifica cada registro de forma única para buscar, editar ou deletar","Melhora o visual da tabela","É exigido pelo navegador Chrome"],a:1,e:"O ID único permite identificar exatamente qual registro deve ser lido, atualizado ou deletado."}
+]},
+{num:14,title:"Sistema de Empréstimos",emoji:"📖",qs:[
+{t:"Um empréstimo tem relacionamento com quais outras tabelas?",o:["Apenas com a tabela de livros","Apenas com a tabela de alunos","Com as tabelas de livros (livro_id) e alunos (aluno_id)","Com a tabela de usuários e relatórios"],a:2,e:"Um empréstimo tem livro_id (qual livro) e aluno_id (qual aluno) como chaves de relacionamento."},
+{t:"Quais são os três status possíveis de um empréstimo?",o:["Ativo, Inativo, Cancelado","Pendente, Aprovado, Rejeitado","Emprestado, Devolvido, Atrasado","Novo, Em uso, Arquivado"],a:2,e:"Os três status são: Emprestado, Devolvido e Atrasado."},
+{t:"(hoje - retorno) / 86400000 calcula:",o:["O horário atual em milissegundos","O número de dias entre hoje e a data de retorno","O ID do empréstimo","A quantidade de livros disponíveis"],a:1,e:"86400000 ms = 1 dia. A divisão converte a diferença de milissegundos em dias."},
+{t:"Quando um livro é emprestado, o sistema deve:",o:["Excluir o livro do banco","Aumentar a qtd_disponivel","Diminuir a qtd_disponivel e marcar como Emprestado","Criar um novo aluno automaticamente"],a:2,e:"Ao emprestar, a quantidade disponível diminui e o status muda para Emprestado."},
+{t:"Qual objeto JavaScript é usado na aula para trabalhar com datas?",o:["DateUtils","Calendar","DateTime","Date"],a:3,e:"O JavaScript nativo usa o objeto Date() para criar e comparar datas."}
+]},
+{num:15,title:"Dashboard e Relatórios",emoji:"📊",qs:[
+{t:"Qual biblioteca JavaScript é usada para criar gráficos na aula?",o:["D3.js","Google Charts","Chart.js","Recharts"],a:2,e:"Chart.js é a biblioteca de gráficos usada na aula."},
+{t:"Qual elemento HTML é necessário para o Chart.js renderizar um gráfico?",o:["div","svg","canvas","graph"],a:2,e:"O Chart.js desenha o gráfico dentro de um elemento canvas."},
+{t:"No código da aula, o tipo de gráfico usado é:",o:["'line'","'pie'","'radar'","'bar'"],a:3,e:"O tipo bar cria um gráfico de barras, usado para exibir empréstimos por mês."},
+{t:"SheetJS (XLSX) serve para:",o:["Criar gráficos em PDF","Exportar dados como planilha Excel","Conectar ao banco Supabase","Filtrar registros por data"],a:1,e:"SheetJS permite exportar dados JavaScript para arquivos .xlsx (Excel)."},
+{t:"Para filtrar empréstimos por período, usa-se o input tipo:",o:["search","range","date","number"],a:2,e:"input[type=date] cria um campo de seleção de data para filtrar registros por período."}
+]},
+{num:16,title:"Deploy: Publicando na Internet",emoji:"🚀",qs:[
+{t:"Para que serve o GitHub no fluxo de deploy ensinado na aula?",o:["Para hospedar o site diretamente","Para armazenar o código online como repositório","Para criar o banco de dados na nuvem","Para gerar o domínio .app automaticamente"],a:1,e:"O GitHub é o repositório de código online onde o projeto fica armazenado."},
+{t:"O que é um Commit no contexto do GitHub?",o:["Publicar o site na internet","Deletar uma versão anterior","Salvar uma nova versão do código no repositório","Criar uma nova branch"],a:2,e:"Commit é a ação de salvar/registrar uma versão do código no repositório."},
+{t:"O que é Deploy no contexto da aula?",o:["Criar uma conta no GitHub","Testar o código localmente","Publicar a nova versão do site na internet","Excluir o repositório antigo"],a:2,e:"Deploy é o processo de publicar o site, tornando-o acessível na internet."},
+{t:"Qual plataforma de hospedagem é usada na aula para publicar o site gratuitamente?",o:["Netlify","Heroku","AWS","Vercel"],a:3,e:"A Vercel é a plataforma de hospedagem gratuita usada para publicar o BiblioEscola PRO."},
+{t:"Qual é a URL final do sistema após o deploy?",o:["biblioescola-pro.github.io","biblioescola-pro.netlify.app","biblioescola-pro.vercel.app","biblioescola-pro.supabase.co"],a:2,e:"A URL final mencionada na aula é https://biblioescola-pro.vercel.app"}
+]}
+];
+
+const L=['A','B','C','D'];
+let cur=null, ans={}, done=false;
+
+function openAula(n){
+  cur=AULAS[n]; ans={}; done=false;
+  document.getElementById('qic').textContent=cur.emoji;
+  document.getElementById('qttl').textContent='Aula '+cur.num+': '+cur.title;
+  document.getElementById('qsub').textContent=cur.title;
+  document.getElementById('nome').value='';
+  document.getElementById('sh').style.display='none';
+  document.getElementById('sq').style.display='block';
+  document.getElementById('rcard').className='rc';
+  document.getElementById('bsb').disabled=true;
+  document.getElementById('pf').style.width='0%';
+  document.getElementById('pc').textContent='0/5 respondidas';
+  document.getElementById('pa').style.display='none';
+  renderQs();
+  window.scrollTo(0,0);
+}
+
+function renderQs(){
+  const c=document.getElementById('qcon'); c.innerHTML='';
+  cur.qs.forEach((q,qi)=>{
+    const d=document.createElement('div');
+    d.className='qc'; d.dataset.q=qi;
+    const opts=q.o.map((o,oi)=>`<button class="opt" onclick="pick(${qi},${oi})"><span class="ol">${L[oi]}</span><span>${o}</span></button>`).join('');
+    d.innerHTML=`<div class="qn">Questão ${qi+1}</div><div class="qt">${q.t}</div><div class="opts">${opts}</div><div class="fb"></div>`;
+    c.appendChild(d);
+  });
+}
+
+function pick(qi,oi){
+  if(done) return;
+  const card=document.querySelector('[data-q="'+qi+'"]');
+  card.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+  card.querySelectorAll('.opt')[oi].classList.add('sel');
+  ans[qi]=oi;
+  const n=Object.keys(ans).length;
+  document.getElementById('pf').style.width=(n/5*100)+'%';
+  document.getElementById('pc').textContent=n+'/5 respondidas';
+  document.getElementById('bsb').disabled=(n<5);
+}
+
+function submitQuiz(){
+  if(done) return;
+  done=true;
+  document.getElementById('bsb').disabled=true;
+  let score=0;
+  cur.qs.forEach((q,qi)=>{
+    const card=document.querySelector('[data-q="'+qi+'"]');
+    const chosen=ans[qi], correct=q.a;
+    const opts=card.querySelectorAll('.opt');
+    opts.forEach(o=>o.classList.add('dis'));
+    const fb=card.querySelector('.fb');
+    if(chosen===correct){
+      score++;
+      card.classList.add('correct');
+      opts[chosen].classList.add('ok');
+      fb.textContent='✓ '+q.e;
+      fb.classList.add('show','ok');
+    } else {
+      card.classList.add('wrong');
+      if(chosen!==undefined) opts[chosen].classList.add('nope');
+      opts[correct].classList.add('ok');
+      fb.textContent='✗ Resposta correta: '+L[correct]+'. '+q.e;
+      fb.classList.add('show','nope');
+    }
+  });
+  const pct=Math.round(score/5*100);
+  let em,msg;
+  if(pct>=80){em='🏆';msg='Excelente! Domínio total do conteúdo desta aula.';}
+  else if(pct>=60){em='✅';msg='Muito bem! Você compreendeu a maior parte do conteúdo.';}
+  else if(pct>=40){em='📚';msg='Bom esforço! Revise os conceitos que errou e tente novamente.';}
+  else{em='🔄';msg='Revise o conteúdo da aula e tente novamente — você consegue!';}
+  document.getElementById('re').textContent=em;
+  document.getElementById('rs').textContent=score+'/5';
+  document.getElementById('rp').textContent=pct+'% de acertos';
+  document.getElementById('rm').textContent=msg;
+  const rc=document.getElementById('rcard');
+  rc.classList.add('show');
+  setTimeout(()=>document.getElementById('rf').style.width=pct+'%',100);
+  rc.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function imprimirResultado(){
+  const nome=document.getElementById('nome').value.trim()||'(nome não informado)';
+  const score=cur.qs.filter((_,qi)=>ans[qi]===cur.qs[qi].a).length;
+  const pct=Math.round(score/5*100);
+  const data=new Date().toLocaleDateString('pt-BR');
+
+  let html=`
+    <div class="pa-hdr">
+      <div class="pa-escola">C.E. Francisco Antônio Vieira Caldas Júnior · BiblioEscola PRO · 2026</div>
+      <div class="pa-titulo">Aula ${cur.num}: ${cur.title}</div>
+      <div class="pa-meta">Data: ${data} &nbsp;·&nbsp; Prof. Camilo Silva</div>
+      <div class="pa-aluno">Aluno(a): <strong>${nome}</strong></div>
+      <div class="pa-nota">Resultado: ${score}/5 &nbsp;(${pct}%)</div>
+    </div>`;
+
+  cur.qs.forEach((q,qi)=>{
+    const chosen=ans[qi], correct=q.a;
+    const acertou=(chosen===correct);
+    html+=`<div class="pa-q">
+      <div class="pa-qn">Questão ${qi+1}</div>
+      <div class="pa-qt">${q.t}</div>`;
+    q.o.forEach((o,oi)=>{
+      let cls='pa-opt';
+      if(oi===chosen && acertou) cls+=' ok';
+      else if(oi===chosen && !acertou) cls+=' nope';
+      else if(oi===correct && !acertou) cls+=' ok';
+      html+=`<div class="${cls}"><span class="pa-lt">${L[oi]}</span><span>${o}</span></div>`;
+    });
+    html+='</div>';
+    if(qi<4) html+='<hr class="pa-hr">';
+  });
+
+  document.getElementById('pa').innerHTML=html;
+  window.print();
+}
+
+function retryQuiz(){openAula(cur.num);}
+function goHome(){
+  document.getElementById('sq').style.display='none';
+  document.getElementById('sh').style.display='block';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
